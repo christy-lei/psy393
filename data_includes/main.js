@@ -96,9 +96,9 @@ Sequence( "intro", "countdown", randomize("trials"), SendResults() , "bye" )
 // This Template command generates as many trials as there are rows in pcifull.csv
     Template( 
         "pcifull.csv" 
-        , // "word" will iteratively point to every row in pcifull.csv
+        ,            // "row" will iteratively point to every row in pcifull.csv
+        row => newTrial("trials", 
         
-        word => newTrial("trials", 
         newVar("breaks", 0).global().set(v=>v+1) // We will use this global Var element to insert a break (every 40 trials)
         .test.is(v => v%41 == 0 ) // tests the value of the Var element (insert a break at every 41th trial)
         .success(newText("break","<p>Please take a break now!</p> <p> When you are ready, press F or J to continue. </p>") 
@@ -132,7 +132,7 @@ Sequence( "intro", "countdown", randomize("trials"), SendResults() , "bye" )
                 .remove() // remove the fixation cross 
             ,
         
-            newText("word1", word.Prime)  
+            newText("word1", row.Prime)  
                 .css("font-size","40px")
                 .print("center at 50%" , "center at 50%")
                 .log()
@@ -147,7 +147,7 @@ Sequence( "intro", "countdown", randomize("trials"), SendResults() , "bye" )
                 .remove()        // remove the first word
             ,
             
-            newText("word2", word.Critical) // present the second word (critical word)
+            newText("word2", row.Critical) // present the second word (critical word)
                 .css("font-size","40px")
                 .print("center at 50%" , "center at 50%")
                 .log()
@@ -161,9 +161,9 @@ Sequence( "intro", "countdown", randomize("trials"), SendResults() , "bye" )
         )
         .setOption("hideProgressBar",true)
         
-        .log("Condition", word.Condition)
-        .log("Prime" ,word.Prime)
-        .log("Critical", word.Critical)
+        .log("Condition", row.Condition)
+        .log("Prime" ,row.Prime)
+        .log("Critical", row.Critical)
         // use .log() to add these three columns to the results file of these Template-based trials
     )
     
@@ -182,6 +182,3 @@ Sequence( "intro", "countdown", randomize("trials"), SendResults() , "bye" )
     ).setOption("hideProgressBar",true) 
     
     PennController.DebugOff() // Hide the debugger when you are ready to publish your study (delete this line during your initial programming/testing phase)
-
-
-
